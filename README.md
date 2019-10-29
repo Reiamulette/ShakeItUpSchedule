@@ -1,3 +1,4 @@
 # ShakeItUpSchedule
 Shake It Up Schedule is a scheduler for events/conventions. As someone who worked on the executive board for two years for a local annual convention, there are many attendees that do not read our program guide and do not explore or take advantage our new activities that are planned to add to the value of having a ticket. 
+The app would be able to read an excel file containing details of the event and then take survey results to create a good schedule planned by the scheduler. 
 For this project I will use the 2019 events of Castle Point Anime Convention, as this information is the most recent of that of the event. 
