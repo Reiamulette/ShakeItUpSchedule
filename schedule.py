@@ -7,7 +7,7 @@ import xlrd
 #noinspection PyUnresolvedReferences
 import time
 #noinspection PyUnresolvedReferences
-import datetime
+import datetime as dt
 
 
 
@@ -17,29 +17,36 @@ def load_data():
     df = pd.read_excel(filename)
     print(df)
 
-
-#def survey():
-    #ask user time they will be present and expected time to leave
-
-
-#def makeSched():
-
 def day_time():
     day = int(input("How many days of the event are there?"))
-    print(date)
-    for i in day:
-        day += 1
-    try:
-        start_time = datetime.strptime(input("Input Beginning Time in HHMM format:"),"%H%M")
-        print (start_time.strftime("%H%M"))
-    except:
-        print("Please enter in correct time in HHMM format")
+    print(day)
+    a = 1
+    start_timea = []
+    end_timea = []
+    for x in range(0, day):
+        try:
+            start_time = input("Input Beginning Time in HH:MM format for day:")
+            start_time= dt.datetime.strptime(start_time,"%H:%M")
+            start_timea.append(start_time.strftime('%H:%M'))
+            print (start_timea)
+        except:
+            print ("ERROR! Please enter the start time in HH:MM in 24-hour format. \nPossible Errors may include:\n- Missing Colons\n- Program does not accept AM/PM (must be in 24 hour format)\n")
+    print("\n Noted. \n")
+    end_timea = []
+    for x in range(0, day):
+        try:
+            end_time = input("Input End Time in HHMM format for day:")
+            end_time = dt.datetime.strptime(end_time,"%H:%M")
+            end_timea.append(end_time.strftime('%H:%M'))
+            print (end_timea)
+        except:
+            print ("ERROR! Please enter the start time in HH:MM format in 24-hour format.  \nPossible Errors may include:\n- Missing Colons\n- Program does not accept AM/PM (must be in 24 hour format)\n")
 
-    #end_time = datetime.datetime.strptime(input("Input End Time in HHMM format:"))
-
-    #date = input("What days of the week are you attending?: ")
+def survey()
 
 
-#load_data()
-# survey()
+
+
+load_data()
 day_time()
+# survey()
