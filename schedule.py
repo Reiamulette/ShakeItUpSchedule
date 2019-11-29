@@ -44,7 +44,7 @@ def day_time():
             try:
                 dateofday = input("What date is it on day " + str(x+1) + "? (in MM/DD/YYYY format)")
                 dateofday = dt.datetime.strptime(dateofday,"%m/%d/%Y")
-                append.dateofdaya(dt.date.strftime(dateofday,"%m/%d/%Y"))
+                append.dateofdaya(dateofday.strftime("%m/%d/%Y"))
             except:
                 print("\nERROR! Please enter the date of day " + str(x+1) +" in MM/DD/YYYY format. \nPossible Errors may include:\n- Missing slashes\n")
                 continue
