@@ -30,38 +30,40 @@ def day_time():
     day = int(input("How many days of the event are you planning to attend?"))
     print(day)
 
-    a = 1
     global dateofday
     global dateofdaya #creates list of dates
     global start_time
     global start_timea
     global end_timea
     global end_time
+    dateofdaya = []
     start_timea = [] #creates list of start time
     end_timea = []   #creates list of end time
+
     for x in range(0, day):
         while True:
             try:
                 dateofday = input("What date is it on day " + str(x+1) + "? (in MM/DD/YYYY format)")
                 dateofday = dt.datetime.strptime(dateofday,"%m/%d/%Y")
-                append.dateofdaya(dateofday.strftime("%m/%d/%Y"))
+                dateofday.strftime("%m/%d/%Y")
+                dateofdaya.append(dateofday.strftime("%m/%d/%Y"))
             except:
                 print("\nERROR! Please enter the date of day " + str(x+1) +" in MM/DD/YYYY format. \nPossible Errors may include:\n- Missing slashes\n")
                 continue
             break
-    for x in range(0, day):
         while True:
             try:
 
+
                 start_time = input("Enter your arrival time in HH:MM format for day "+ str(x+1)+ ":")
-                start_time= dt.datetime.strptime(start_time,"%H:%M")
+                start_time = dt.datetime.strptime(start_time,"%H:%M")
                 if start_time.strftime('%H:%M'):
                     while True:
                         try:
                             end_time = input("Enter your end time in HH:MM format for day "+ str(x+1)+ ":")
-                            end_time= dt.datetime.strptime(end_time,"%H:%M")
+                            end_time = dt.datetime.strptime(end_time,"%H:%M")
                             dur = end_time - start_time
-                            if dur > dt.timedelta(0) :
+                            if dur > dt.timedelta(0):
                                 start_timea.append(start_time.strftime('%H:%M'))
                                 end_timea.append(end_time.strftime('%H:%M'))
 
@@ -111,19 +113,19 @@ def event_on():
 
 
 
-def createSched():
-
-
-
-    feature_panel == 5
-    contest ==4
-    concert == 3
-    artist_alley == 2
-    dealer_room == 2
-    arcade == 2
-    manga_library == 2
-    maid_cafe == 2
-    panel == 1
+# def createSched():
+#
+#
+#
+#     feature_panel == 5
+#     contest ==4
+#     concert == 3
+#     artist_alley == 2
+#     dealer_room == 2
+#     arcade == 2
+#     manga_library == 2
+#     maid_cafe == 2
+#     panel == 1
 
 
 
