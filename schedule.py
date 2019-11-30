@@ -12,19 +12,21 @@ import datetime as dt
 import timedelta as td
 
 
-
-#category = []
+b = []
+category = []
 def load_data():
-    print("Welcome to ShakeItUpSchedule. \n Please make sure the excel file includes the following categories in the columns: \n Serial Number, Event Title, Event Description, Day, Location, Start Time, End Time, and Categories")
-    filename = input("Enter the path of the excel file: ")
+    print("Welcome to ShakeItUpSchedule. \n Please make sure the excel file includes the following categories in the columns: \n Serial Number, Event Title, Event Description, Day, Location, Start Time, End Time, Categories, and Subcategories")
     global df
-    df = pd.read_excel(filename)
-    print(df)
-    b = []
-    category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Arcade", "Manga Library", "Contest", "Console Game", "Guests", "Panel", "Concert"]
-    for x in category:
-        a = input("Are you interested in participating in " + str(x) + "?")
-        b.append(a)
+    while True:
+        try:
+            filename = input("Enter the path of the excel file: ")
+            df = pd.read_excel(filename)
+            print(df)
+        except:
+            print("Error! Did you enter the path correctly?")
+            continue
+        break
+
     return df
 def day_time():
     day = int(input("How many days of the event are you planning to attend?"))
@@ -87,35 +89,54 @@ def day_time():
 
     return start_time
     return end_time
-"""
-    for x in range(0, day):
-        while True:
-            try:
-                end_time = input("Enter your expected end time in HH:MM format for day "+ str(x+1)+":")
-                end_time = dt.datetime.strptime(end_time,"%H:%M")
-                if end_time.strftime('%H:%M'):
-                    if
-                    end_timea.append(end_time.strftime('%H:%M'))
-                    print (end_timea)
-                    print("\n Noted. \n")
-            except:
-                print ("ERROR! Please enter the start time in HH:MM format in 24-hour format.  \nPossible Errors may include:\n- Missing Colons\n- Program does not accept AM/PM (must be in 24 hour format)\n")
+
+def filter_date():
+    global b
+    global c
+    global possible_events
+    for x in range(len(dateofdaya)):
+        possible_events = df["Day"].isin(b)
+
+
+def survey():
+    global a
+    global b
+    global category
+    global is_day
+    category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs", "Concerts"]
+    global possible_events
+    global possible_df
+    possible_events = []
+    possible_df = pd.DataFrame()
+    for x in category:
+        a = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
+        if a == "yes":
+            is_category = df["Categories"].isin([x])
+            print(df[is_category])
+            b.append(df[is_category])
+            filter_date()
+        elif a == "no":
+            False
+        else:
+            print("Not an accepted answer.")
             break
-"""
+    print(b)
+
+
+
+
+
+
 
 def event_on():
-    filename = input("Enter the path of the excel file: ")
-    df = pd.read_excel(filename)
     print(df["Start Time"])
-
-
     print(start_time)
 
 
 
-# def createSched():
-#
-#
+#def createSched():
+
+
 #
 #     feature_panel == 5
 #     contest ==4
@@ -130,7 +151,8 @@ def event_on():
 
 
 
-#load_data()
+load_data()
 day_time()
 #createSched()
-event_on()
+#event_on()
+survey()
