@@ -10,19 +10,21 @@ import time
 import datetime as dt
 # noinspection PyUnresolvedReferences
 import timedelta as td
-
+desired_width = 300
+pd.set_option('display.width', desired_width)
+np.set_printoptions(linewidth=desired_width)
 
 
 def load_data():
-    global df
-    df = 0
+    global dataf
+
 
     print("Welcome to ShakeItUpSchedule. \n Please make sure the excel file includes the following categories in the columns: \n Serial Number, Event Title, Event Description, Day, Location, Start Time, End Time, Categories, and Subcategories")
     while True:
         try:
-            filename = input("Enter the path of the excel file: ")
-            df = pd.read_excel(filename)
-            print(df)
+            filename = input("Enter the path of the excel file (be sure to include .xlsx): ")
+            dataf = pd.read_excel(filename)
+            print(dataf)
         except:
             print("Error! Did you enter the path correctly?")
             continue
@@ -100,35 +102,35 @@ def survey():
     global in_interests
     global category
     global is_day
-    global in_category
     global possible_events
     global possible_df
+    global filt_category
     possible_events = []
+    filt_category = pd.DataFrame()
     in_interests = pd.DataFrame()
-    category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs", "Concerts"]
+    category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
     possible_df = pd.DataFrame()
 
     for x in category:
         interest = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
         if interest == "yes":
-            in_category = df["Categories"].isin([x])
+            filt_category = dataf["Categories"].isin([x])
 
 
-            print(in_category)
-            print("in_category")
-            print(type(in_category))
-            in_interests.add(in_category)
-            print(type(in_interests))
-            print(in_interests)
+            for index, row in dataf[filt_category].iteruples():
+                in_interests.append(row)
+            #     print(type(in_interests))
+            #     print(in_interests)
 
-            filter_date()
+            #filter_date()
 
         elif interest == "no":
             pass
         else:
             print("Not an accepted answer.")
             break
-        print(type(in_interests))
+    print(dataf[in_interests])
+    print("hmm)")
 
 
 
