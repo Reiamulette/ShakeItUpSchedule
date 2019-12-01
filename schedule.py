@@ -10,22 +10,12 @@ import time
 import datetime as dt
 # noinspection PyUnresolvedReferences
 import timedelta as td
-global df
-global dateofday
-global dateofdaya #creates list of dates
-global start_time
-global start_timea
-global end_timea
-global end_time
-global interest
-global b
-global category
-global is_day
-global is_category
+
 
 
 def load_data():
-    globals()
+    global df
+
     print("Welcome to ShakeItUpSchedule. \n Please make sure the excel file includes the following categories in the columns: \n Serial Number, Event Title, Event Description, Day, Location, Start Time, End Time, Categories, and Subcategories")
     while True:
         try:
@@ -39,9 +29,15 @@ def load_data():
 
 
 def day_time():
+    global dateofday
+    global dateofdaya #creates list of dates
+    global start_time
+    global start_timea
+    global end_timea
+    global end_time
+
     day = int(input("How many days of the event are you planning to attend?"))
     print(day)
-
 
     dateofdaya = []
     start_timea = [] #creates list of start time
@@ -95,6 +91,12 @@ def day_time():
 
 
 def survey():
+    global interest
+    global b
+    global category
+    global is_day
+    global is_category
+
 
     b = []
     category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs", "Concerts"]
