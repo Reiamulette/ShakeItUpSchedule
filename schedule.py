@@ -15,6 +15,7 @@ import timedelta as td
 
 def load_data():
     global df
+    df = 0
 
     print("Welcome to ShakeItUpSchedule. \n Please make sure the excel file includes the following categories in the columns: \n Serial Number, Event Title, Event Description, Day, Location, Start Time, End Time, Categories, and Subcategories")
     while True:
@@ -35,13 +36,17 @@ def day_time():
     global start_timea
     global end_timea
     global end_time
-
-    day = int(input("How many days of the event are you planning to attend?"))
-    print(day)
-
     dateofdaya = []
     start_timea = [] #creates list of start time
     end_timea = []   #creates list of end time
+    while True:
+        try:
+            day = int(input("How many days of the event are you planning to attend?"))
+            print(day)
+        except:
+            print("Error! Did you enter the number correctly?")
+            continue
+        break
 
     for x in range(0, day):
         while True:
@@ -92,44 +97,45 @@ def day_time():
 
 def survey():
     global interest
-    global b
+    global in_interests
     global category
     global is_day
-    global is_category
-
-
-    b = []
-    category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs", "Concerts"]
+    global in_category
     global possible_events
     global possible_df
     possible_events = []
+    in_interests = pd.DataFrame()
+    category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs", "Concerts"]
     possible_df = pd.DataFrame()
+
     for x in category:
         interest = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
         if interest == "yes":
-            is_category = df["Categories"].isin([x])
+            in_category = df["Categories"].isin([x])
 
-            pd.b.add(is_category)
-            print(is_category)
-            print("is_category")
-            print(type(is_category))
-            print("b")
-            print(type(b))
+
+            print(in_category)
+            print("in_category")
+            print(type(in_category))
+            in_interests.add(in_category)
+            print(type(in_interests))
+            print(in_interests)
 
             filter_date()
 
-        elif a == "no":
+        elif interest == "no":
             pass
         else:
             print("Not an accepted answer.")
             break
-        print(type(b))
+        print(type(in_interests))
 
 
 
 def filter_date():
-    global b
+    global in_interests
     global possible_events
+    global is_day
 
     for x in dateofdaya:
         #possible_events = is_category.df["Day"].isin([b])
