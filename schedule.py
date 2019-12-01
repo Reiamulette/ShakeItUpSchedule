@@ -3,8 +3,6 @@ import pandas as pd
 # noinspection PyUnresolvedReferences
 import numpy as np
 # noinspection PyUnresolvedReferences
-import xlrd
-# noinspection PyUnresolvedReferences
 import time
 # noinspection PyUnresolvedReferences
 import datetime as dt
