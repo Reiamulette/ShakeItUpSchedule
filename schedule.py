@@ -8,6 +8,8 @@ import time
 import datetime as dt
 # noinspection PyUnresolvedReferences
 import timedelta as td
+# noinspection PyUnresolvedReferences
+import schedule
 desired_width = 300
 pd.set_option('display.width', desired_width)
 np.set_printoptions(linewidth=desired_width)
@@ -15,13 +17,15 @@ np.set_printoptions(linewidth=desired_width)
 
 def load_data():
     global dataf
+    global df
 
 
     print("Welcome to ShakeItUpSchedule. \n Please make sure the excel file includes the following categories in the columns: \n Serial Number, Event Title, Event Description, Day, Location, Start Time, End Time, Categories, and Subcategories")
     while True:
         try:
             filename = input("Enter the path of the excel file (be sure to include .xlsx): ")
-            dataf = pd.read_excel(filename)
+            df = pd.read_excel(filename)
+            dataf = df.copy()
             print(dataf)
         except:
             print("Error! Did you enter the path correctly?")
@@ -103,22 +107,22 @@ def survey():
     global possible_events
     global possible_df
     global filt_category
+    global new_dataf
     possible_events = []
     filt_category = pd.DataFrame()
-    in_interests = pd.DataFrame()
+    new_dataf = pd.DataFrame()
     category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
     possible_df = pd.DataFrame()
 
     for x in category:
         interest = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
         if interest == "yes":
-            filt_category = dataf["Categories"].isin([x])
+            filt_category = dataf["Categories"].isin([x])   #filters the events that are in said category
+            temp_dataf = dataf[filt_category].copy()
+            new_dataf = new_dataf.append(temp_dataf)
+            print(new_dataf)
 
 
-            for index, row in dataf[filt_category].iteruples():
-                in_interests.append(row)
-            #     print(type(in_interests))
-            #     print(in_interests)
 
             #filter_date()
 
@@ -127,25 +131,45 @@ def survey():
         else:
             print("Not an accepted answer.")
             break
-    print(dataf[in_interests])
+    print(new_dataf)
     print("hmm)")
 
 
 
-def filter_date():
-    global in_interests
-    global possible_events
-    global is_day
+# def filter_date():
+#     global in_interests
+#     global possible_events
+#     global is_day
+#
+#     for x in dateofdaya:
+#         #possible_events = is_category.df["Day"].isin([b])
+#         print("possible_events")
+#         print(type(possible_events))
 
-    for x in dateofdaya:
-        #possible_events = is_category.df["Day"].isin([b])
-        print("possible_events")
-        print(type(possible_events))
+
+def scheduling():
+    global interval
+    global in_day_dataf
+    global in_date
+    global current_time
+    interval = dt.timedelta(minutes = 15)
+    for j in dateofdaya:
+        in_date = new_dataf["Day"].isin([j])            #filters the events that are in said day
+        temp_dataf = dataf[in_date].copy()              #copies the printed date
+        in_day_dataf = in_day_dataf.append(temp_dataf)  #add to new dataframe called in_day_dataf
+        print(in_day_dataf)
 
 
-def event_on():
-    print(df["Start Time"])
-    print(start_time)
+    # for current_time in start_timea, end_timea:
+    #     if current_time == end_timea:
+
+
+        # for i in range(len(dateofdaya)):
+        #
+
+
+
+
 
 #def createSched():
 
@@ -166,6 +190,5 @@ def event_on():
 
 load_data()
 day_time()
-#createSched()
-#event_on()
 survey()
+scheduling()
