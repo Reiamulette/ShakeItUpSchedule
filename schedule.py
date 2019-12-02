@@ -116,7 +116,7 @@ def survey():                       #figure out your interests (and eventually b
     filt_category = pd.DataFrame()
     new_dataf = pd.DataFrame()
 
-    category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
+    category = ["Featured Panels","Artist Alley", "Dealer's Room","Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
 
     for x in category:
         interest = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
@@ -163,26 +163,48 @@ def scheduling():                                               #starts trying t
     global duration
     global in_day_dataf
     global crop_time
+    global randomize
+    global act_sched
+    global rand_number
 
-    crop_time = dt.timedelta(minutes = 60)
+    rand_number = 0
     in_day_dataf = pd.DataFrame()
-    count_row = in_day_dataf.shape[0]                           #count number of rows
+    in_day_dataf_count_row = in_day_dataf.shape[0]              #count number of rows of the in_day_dataf
+    act_sched_count_row = in_day_dataf.shape[0]                 #count number of rows in actual schedule
     current_time = start_timea[:]                               #give current_time a copy of start_time (so it change current time without moving start_time)
-    random.randint(0,count_row - 1)
+    randomize = random.randint(0,in_day_dataf_count_row - 1)    #randomly choose event
+    act_sched = pd.DataFrame()                                  # the schedule!
+
     for x,y,z in start_timea, end_timea, current_time:
-        while z < y:
-            if in_day_dataf["Categories"]:
+        if act_sched_count_row < 3:                             # attending 3 "prioritized" events minimum
+            while z < y:                                        #if current time is less than end time we want to add events
+                while True:                                     #random number generator
+                    try:
+                        rnumber = int(input("Input a Random Number to randomly generate which event should be put into the category))
+                        print(rnumber)
+                        for j in range(rnumber):
+                            rand_number = randomize
+                        act_sched = act_sched.append(in_day_dataf.iloc(rand_number))    #add row to schedule
+                        duration_limit()                                                #check if row satisfy duration
+                    except:
+                        print("Error! Did you enter a number?")
+                        continue
+                    break
 
-            if in_day_dataf["Duration"] > dt.timedelta(minutes = 180):
 
 
-            else:
-                pass
-            y += interval                                       # to help break while loop.
+
+                y += interval                                       # to help break while loop.
 
 
-def ():
+def duration_limit():
+    crop_time = dt.timedelta(minutes = 60)
 
+    if in_day_dataf["Duration"] > dt.timedelta(minutes = 180):
+
+        act_sched.update()
+    if act_sched["Start Time"] >= in_day_data.iloc(rand_number)["Start Time"]:        #if the event isn't open yet, move on to next hour to check
+        if act_sched["End Time"] >= in_day_data.iloc(rand_number)["End Time"]:
 
 load_data()
 day_time()
