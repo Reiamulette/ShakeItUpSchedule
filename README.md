@@ -9,9 +9,12 @@ What this application does.
 1. Having user input an excel file in specific format, by inputting path.
 2. Ask user for day of attendance and time of attendance for each day.
 3. Ask user for what they are interested in and filter base on interest and day.
-4. Jam events into a dataframe using depth first search (?)
+4. Jam events into a dataframe using depth first search (?) and a random number generator to choose events
 5. Output a schedule.
 
+For this project:
+category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
+Panels is also a category, but since it has "lower priority"
 
 Certain events such as Artist Alley, Dealer's Room, Game Room, and Maid Cafe have long hours where attendees do not spend the entire time in.
 The program should be able to take the time frame and allocate 1 hour if the attendee wants participate.
