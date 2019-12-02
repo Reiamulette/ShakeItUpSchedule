@@ -126,10 +126,10 @@ def survey():                       #figure out your interests (and eventually b
             temp_dataf = dataf[filt_category].copy()
             new_dataf = new_dataf.append(temp_dataf)
             print(new_dataf)
-            t1 = new_dataf["Start Time"].apply(pd.Timestamp)
-            t2 = new_dataf["End Time"].apply(pd.Timestamp)
-            data_f[duration] = (t2 - t1).dt.days
-            new_dataf = new_dataf.assign(Duration = [duration],dtype='datetime64[ns]')
+            new_dataf["Start Time"] = new_dataf["Start Time"].apply(pd.Timestamp)
+            new_dataf ["End Time"] = new_dataf["End Time"].apply(pd.Timestamp)
+            data_f[Duration] = (new_dataf["End Time"]- new_dataf["Start Time"]).dt.days
+            new_dataf = new_dataf.assign(Duration = [Duration])
 
             filter_date()                                      #calls function filter_date
         elif interest == "no":
