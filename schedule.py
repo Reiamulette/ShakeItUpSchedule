@@ -21,7 +21,7 @@ pd.set_option('display.width', desired_width)
 np.set_printoptions(linewidth=desired_width)
 
 
-def load_data():
+def load_data():                    #loads the excel file
     global dataf
     global df
 
@@ -39,7 +39,7 @@ def load_data():
         break
 
 
-def day_time():
+def day_time():                 #finds out when you are going to be at the event
     global dateofday
     global dateofdaya
     global start_time
@@ -47,9 +47,9 @@ def day_time():
     global end_timea
     global end_time
 
-    dateofdaya = []
-    start_timea = [] #creates list of start time
-    end_timea = []   #creates list of end time
+    dateofdaya = []         #creates list of dates
+    start_timea = []        #creates list of start time
+    end_timea = []          #creates list of end time
 
     while True:
         try:
@@ -105,11 +105,8 @@ def day_time():
     print("\n Noted. \n")
 
 
-def survey():
-    global interest
-    global in_interests
+def survey():                       #figure out your interests (and eventually builds your schedule)
     global category
-    global is_day
     global possible_events
     global filt_category
     global new_dataf
@@ -121,57 +118,72 @@ def survey():
 
     category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
 
-
     for x in category:
         interest = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
         if interest == "yes":
-            filt_category = dataf["Categories"].isin([x])   #filters the events that are in said category
+            filt_category = dataf["Categories"].isin([x])       #filters the events that are in said category
             temp_dataf = dataf[filt_category].copy()
             new_dataf = new_dataf.append(temp_dataf)
             print(new_dataf)
-            filter_date()                                   #calls function filter_date
+            #filter_date()                                      #calls function filter_date
         elif interest == "no":
             pass
         else:
-            print("Not an accepted answer.")
+            print("Not an acceptable answer. Try Again.")
             break
 
-def filter_date():
+def filter_date():                                              #filters day the date
     global in_day_dataf
     global in_date
-
+    global interval
+    global duration
     in_date = pd.DataFrame()
     in_day_dataf = pd.DataFrame()
+    duration = pd.Series()
 
+    interval = dt.timedelta(minutes=15)
 
-    interval = dt.timedelta(minutes = 15)
     for j in dateofdaya:
-        in_date = new_dataf["Day"].isin([j])            #filters the events that are in said day
-        temp_dataf = dataf[in_date].copy()              #copies the printed date
-        in_day_dataf = in_day_dataf.append(temp_dataf)  #add to new dataframe called in_day_dataf
+        in_date = new_dataf["Day"].isin([j])                    #filters the events that are in said day
+        temp_dataf = dataf[in_date].copy()                      #copies the printed date
+        in_day_dataf = in_day_dataf.append(temp_dataf)          #add to new dataframe called in_day_dataf
+
+        #Create new "column" of dataframe for duration
+        t1 = pd.to_datetime(in_day_dataf["Start Time"])
+        t2 = pd.to_datetime(in_day_dataf["End Time"])
+        duration = pd.Timedelta(t2-t1).seconds / 3600
+        in_day_dataf = in_day_df.assign(Duration = [duration])
+
         print(df[in_day_dataf])
         scheduling()
 
-def scheduling():
+def scheduling():                                               #starts trying to schedule
     global current_time
     global interval
     global duration
+    global in_day_dataf
+    global crop_time
 
+    crop_time = dt.timedelta(minutes = 60)
     in_day_dataf = pd.DataFrame()
-
-    duration = df[in_day_dataf["Start Time"]] - df[in_day_dataf["Start Time"]]            #HERE! Try to set AA/DR/GR/MC to 1 hour each
-
-    current_time = start_timea[:]                       #give current_time a copy of start_time (so it change current time without moving start_time)
+    count_row = in_day_dataf.shape[0]                           #count number of rows
+    current_time = start_timea[:]                               #give current_time a copy of start_time (so it change current time without moving start_time)
+    random.randint(0,count_row - 1)
     for x,y,z in start_timea, end_timea, current_time:
         while z < y:
-            add_events()
-            y += interval
+            if in_day_dataf["Categories"]:
 
-def add_events():
-    print(a)
+            if in_day_dataf["Duration"] > dt.timedelta(minutes = 180):
+
+
+            else:
+                pass
+            y += interval                                       # to help break while loop.
+
+
+def ():
 
 
 load_data()
 day_time()
 survey()
-scheduling()

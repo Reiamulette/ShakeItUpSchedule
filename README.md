@@ -4,6 +4,7 @@ The program would be able to read an excel file containing details of the event 
 For this project I will use the 2019 events of Castle Point Anime Convention, as this information is the most recent of that of the event. 
 
 This project uses packages from pandas, numpy, datetime, timedelta, and time.
+An sample excel sheet is included in the folder.
 
 What this application does.
 1. Having user input an excel file in specific format, by inputting path.
@@ -14,7 +15,7 @@ What this application does.
 
 For this project:
 category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
-Panels is also a category, but since it has "lower priority"
+Panels is also a category, but since it has "lower priority", it will be shoved into the schedule if the user doesn't want to do anything "special".
 
 Certain events such as Artist Alley, Dealer's Room, Game Room, and Maid Cafe have long hours where attendees do not spend the entire time in.
 The program should be able to take the time frame and allocate 1 hour if the attendee wants participate.
