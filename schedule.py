@@ -74,12 +74,12 @@ def day_time():                 #finds out when you are going to be at the event
             break
         while True:
             try:
-                start_time = input("Enter your arrival time in HH:MM format for day "+ str(x+1)+ ":")
+                start_time = input("Enter your arrival time in HH:MM format for day "+ str(x+1)+ " in military time:")
                 start_time = dt.datetime.strptime(start_time,"%H:%M")
                 if start_time.strftime('%H:%M'):
                     while True:
                         try:
-                            end_time = input("Enter your end time in HH:MM format for day "+ str(x+1)+ ":")
+                            end_time = input("Enter your end time in HH:MM format for day "+ str(x+1)+ " in miliary time:")
                             end_time = dt.datetime.strptime(end_time,"%H:%M")
                             dur = end_time - start_time
                             if dur > dt.timedelta(0):
@@ -110,8 +110,9 @@ def survey():                       #figure out your interests (and eventually b
     global possible_events
     global filt_category
     global new_dataf
+    global duration
 
-
+    duration = pd.Series()
     possible_events = []
     filt_category = pd.DataFrame()
     new_dataf = pd.DataFrame()
@@ -124,8 +125,12 @@ def survey():                       #figure out your interests (and eventually b
             filt_category = dataf["Categories"].isin([x])       #filters the events that are in said category
             temp_dataf = dataf[filt_category].copy()
             new_dataf = new_dataf.append(temp_dataf)
-            print(new_dataf)
-            #filter_date()                                      #calls function filter_date
+            print(df[new_dataf])
+            t1 = pd.to_datetime(new_dataf["Start Time"])
+            t2 = pd.to_datetime(new_dataf["End Time"])
+            duration = pd.Timedelta(t2-t1).seconds / 3600
+            new_dataf = new_dataf.assign(Duration = [duration])
+            filter_date()                                      #calls function filter_date
         elif interest == "no":
             pass
         else:
@@ -136,10 +141,10 @@ def filter_date():                                              #filters day the
     global in_day_dataf
     global in_date
     global interval
-    global duration
+
     in_date = pd.DataFrame()
     in_day_dataf = pd.DataFrame()
-    duration = pd.Series()
+
 
     interval = dt.timedelta(minutes=15)
 
@@ -148,14 +153,14 @@ def filter_date():                                              #filters day the
         temp_dataf = dataf[in_date].copy()                      #copies the printed date
         in_day_dataf = in_day_dataf.append(temp_dataf)          #add to new dataframe called in_day_dataf
 
-        #Create new "column" of dataframe for duration
-        t1 = pd.to_datetime(in_day_dataf["Start Time"])
-        t2 = pd.to_datetime(in_day_dataf["End Time"])
-        duration = pd.Timedelta(t2-t1).seconds / 3600
-        in_day_dataf = in_day_df.assign(Duration = [duration])
+    #Create new "column" of dataframe for duration
+    t1 = pd.to_datetime(in_day_dataf["Start Time"])
+    t2 = pd.to_datetime(in_day_dataf["End Time"])
+    duration = pd.Timedelta(t2-t1).seconds / 3600
+    in_day_dataf = in_day_dataf.assign(Duration = [duration])
 
-        print(df[in_day_dataf])
-        scheduling()
+    print(df[in_day_dataf])
+    #scheduling()
 
 def scheduling():                                               #starts trying to schedule
     global current_time
@@ -180,7 +185,7 @@ def scheduling():                                               #starts trying t
             while z < y:                                        #if current time is less than end time we want to add events
                 while True:                                     #random number generator
                     try:
-                        rnumber = int(input("Input a Random Number to randomly generate which event should be put into the category))
+                        rnumber = int(input("Input a Random Number to randomly generate which event should be put into the category"))
                         print(rnumber)
                         for j in range(rnumber):
                             rand_number = randomize
@@ -205,6 +210,7 @@ def duration_limit():
         act_sched.update()
     if act_sched["Start Time"] >= in_day_data.iloc(rand_number)["Start Time"]:        #if the event isn't open yet, move on to next hour to check
         if act_sched["End Time"] >= in_day_data.iloc(rand_number)["End Time"]:
+            print(act_sched)
 
 load_data()
 day_time()
