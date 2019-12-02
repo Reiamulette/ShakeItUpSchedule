@@ -6,6 +6,8 @@ For this project I will use the 2019 events of Castle Point Anime Convention, as
 This project uses packages from pandas, numpy, datetime, timedelta, and time.
 An sample excel sheet is included in the folder.
 
+Possible Event Dates are: 04/27/2019 and 04/28/2019 if using the given excel file.
+
 What this application does.
 1. Having user input an excel file in specific format, by inputting path.
 2. Ask user for day of attendance and time of attendance for each day.

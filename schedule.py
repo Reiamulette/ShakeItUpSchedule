@@ -125,11 +125,12 @@ def survey():                       #figure out your interests (and eventually b
             filt_category = dataf["Categories"].isin([x])       #filters the events that are in said category
             temp_dataf = dataf[filt_category].copy()
             new_dataf = new_dataf.append(temp_dataf)
-            print(df[new_dataf])
-            t1 = pd.to_datetime(new_dataf["Start Time"])
-            t2 = pd.to_datetime(new_dataf["End Time"])
-            duration = pd.Timedelta(t2-t1).seconds / 3600
-            new_dataf = new_dataf.assign(Duration = [duration])
+            print(new_dataf)
+            t1 = new_dataf["Start Time"].apply(pd.Timestamp)
+            t2 = new_dataf["End Time"].apply(pd.Timestamp)
+            data_f[duration] = (t2 - t1).dt.days
+            new_dataf = new_dataf.assign(Duration = [duration],dtype='datetime64[ns]')
+
             filter_date()                                      #calls function filter_date
         elif interest == "no":
             pass
