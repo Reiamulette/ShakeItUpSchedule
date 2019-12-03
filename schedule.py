@@ -123,11 +123,16 @@ def survey():                       #figure out your interests (and eventually b
             filt_category = dataf["Categories"].isin([x])       #filters the events that are in said category
             temp_dataf = dataf[filt_category].copy()
             new_dataf = new_dataf.append(temp_dataf)
-            print(new_dataf)
-            new_dataf["Start Time"] = new_dataf["Start Time"].apply(pd.Timestamp)
-            new_dataf ["End Time"] = new_dataf["End Time"].apply(pd.Timestamp)
-            new_dataf[Duration] = (new_dataf["End Time"]- new_dataf["Start Time"]).dt.days
-            new_dataf = new_dataf.assign(Duration = [Duration])
+            print(new_dataf)                                    #new_dataf IS a dataframe
+            obscure = pd.DataFrame(columns = ['to','fr','ans'])
+            obscure.to = new_dataf["Start Time"].to_timestamp
+            obscure.fr = new_dataf["End Time"].to_timestamp
+            duration = (obscure.fr - obscure.to).astype('timedelta64[h]')
+            print(type(duration))
+            # new_dataf["Start Time"] = new_dataf["Start Time"].apply(pd.Timestamp)
+            # new_dataf["End Time"] = new_dataf["End Time"].apply(pd.Timestamp)
+            # new_dataf[Duration] = (new_dataf["End Time"]- new_dataf["Start Time"]).dt.days
+            new_dataf.insert(7,"Duration",duration,True)
 
             filter_date()                                      #calls function filter_date
         elif interest == "no":
@@ -152,11 +157,6 @@ def filter_date():                                              #filters day the
         temp_dataf = dataf[in_date].copy()                      #copies the printed date
         in_day_dataf = in_day_dataf.append(temp_dataf)          #add to new dataframe called in_day_dataf
 
-    #Create new "column" of dataframe for duration
-    t1 = pd.to_datetime(in_day_dataf["Start Time"])
-    t2 = pd.to_datetime(in_day_dataf["End Time"])
-    duration = pd.Timedelta(t2-t1).seconds / 3600
-    in_day_dataf = in_day_dataf.assign(Duration = [duration])
 
     print(df[in_day_dataf])
     #scheduling()
@@ -194,12 +194,9 @@ def scheduling():                                               #starts trying t
                         print("Error! Did you enter a number?")
                         continue
                     break
-
-
-
-
-                y += interval                                       # to help break while loop.
-
+            y += interval                                       # to help break while loop.
+        else:
+            print(b)
 
 def duration_limit():
     crop_time = dt.timedelta(minutes = 60)
