@@ -9,8 +9,6 @@ import datetime as dt
 # noinspection PyUnresolvedReferences
 import timedelta as td
 # noinspection PyUnresolvedReferences
-import schedule
-# noinspection PyUnresolvedReferences
 import random
 
 #no inspection PyUnresolvedReferences has to do with using PyCharm...
@@ -128,7 +126,7 @@ def survey():                       #figure out your interests (and eventually b
             print(new_dataf)
             new_dataf["Start Time"] = new_dataf["Start Time"].apply(pd.Timestamp)
             new_dataf ["End Time"] = new_dataf["End Time"].apply(pd.Timestamp)
-            data_f[Duration] = (new_dataf["End Time"]- new_dataf["Start Time"]).dt.days
+            new_dataf[Duration] = (new_dataf["End Time"]- new_dataf["Start Time"]).dt.days
             new_dataf = new_dataf.assign(Duration = [Duration])
 
             filter_date()                                      #calls function filter_date

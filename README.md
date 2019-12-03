@@ -8,12 +8,13 @@ An sample excel sheet is included in the folder.
 
 Possible Event Dates are: 04/27/2019 and 04/28/2019 if using the given excel file.
 
-What this application does.
+What this application is supposed to do does.
 1. Having user input an excel file in specific format, by inputting path.
 2. Ask user for day of attendance and time of attendance for each day.
 3. Ask user for what they are interested in and filter base on interest and day.
-4. Jam events into a dataframe using depth first search (?) and a random number generator to choose events
-5. Output a schedule.
+4. Jam category events into a dataframe by using a random number generator to choose from filtered events <-- I'm stuck on this part.
+5. Jam panels events into free times.
+6. Output a schedule.
 
 For this project:
 category = ["Artist Alley", "Dealer's Room", "Featured Panels", "Concerts", "Arcade", "Manga Library", "Contests", "Maid Cafe" , "Guest Autographs"]
@@ -23,4 +24,7 @@ Certain events such as Artist Alley, Dealer's Room, Game Room, and Maid Cafe hav
 The program should be able to take the time frame and allocate 1 hour if the attendee wants participate.
 
 Other events are planned at a certain time, and happens annually.
-The program will take Featured Panels as the first priority, and Panels as the last.
+The program will take the category as priority, and Panels as the last.
+
+
+I spent a lot of time researching while doing this how to use datetime, timedelta, and pandas (dataframes and series).
