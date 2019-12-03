@@ -21,8 +21,8 @@ What this application is supposed to do does.
 4. Jam category events into a dataframe by using a random number generator to choose from filtered events
     a. set up random number generator
     b. check for and split the events that are more than 3 hours long (since those are just hours of the event)
-    c. choosing events by using random number generator                    <---- I'm stuck on this part.
-    d. adding 3 events to schedule
+    c. choosing events by using random number generator
+    d. adding 3 events to schedule                                   <---- I'm stuck on this part.
 5. Jam panels events into free times.
     a. check for empty times to jam events
     b. add panel events that fit

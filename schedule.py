@@ -144,7 +144,7 @@ def survey():                       # figure out your interests (and eventually 
                 continue
             break
     if new_dataf.shape[0]<6:
-            print("Featured Panels will be automatically added because you do not have enough interest in our specially planned event and you're here using this program to try new things!")
+            print("Featured Panels will be automatically added because you do not have enough interest in our specially planned event.\nYou're here using this program to try new things!")
             filt_category = dataf["Categories"].isin(["Featured Panels"])   # filters the events that are in said category
             temp_dataf = dataf[filt_category].copy()
             new_dataf = new_dataf.append(temp_dataf,sort = True)            # sort has to be true to keep index numbers *important because they are labels*
@@ -201,13 +201,16 @@ def scheduling():                                                           # st
                 while True:
                     try:
                         rnumber = int(input("Input a Random Number to randomly generate which event should be put into the category"))
-                        print(rnumber)
-                        rand_number = (randomize for x in range(rnumber))
-                        act_sched = act_sched.append(in_day_dataf.iloc(rand_number))    # add row to schedule
-                        check_time()                                                    # check if row satisfy duration
                     except:
                         print("Error! Did you enter a number?")
                         continue
+                    for i in range(rnumber):
+                        rand_number = random.randint(0,in_day_dataf_count_row-1)
+                        print(rand_number)
+                        act_sched = act_sched.append(in_day_dataf.iloc[rand_number])    # add row to schedule
+                        print(act_sched)
+                        check_time()                                                    # check if row satisfy duration
+
                 break
             y += interval                                                               # to help break while loop.
         else:
