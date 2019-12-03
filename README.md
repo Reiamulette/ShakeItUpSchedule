@@ -12,7 +12,10 @@ What this application is supposed to do does.
 1. Having user input an excel file in specific format, by inputting path.
 2. Ask user for day of attendance and time of attendance for each day.
 3. Ask user for what they are interested in and filter base on interest and day.
-4. Jam category events into a dataframe by using a random number generator to choose from filtered events <-- I'm stuck on this part.
+4. Jam category events into a dataframe by using a random number generator to choose from filtered events
+    a. add a duration column to split the events that are more than 3 hours long (since those are just hours of the event)
+    b. take out all the events of that day. <-- I'm stuck on this part.
+    c. choosing events by using random number generator
 5. Jam panels events into free times.
 6. Output a schedule.
 

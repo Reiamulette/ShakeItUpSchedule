@@ -120,40 +120,39 @@ def survey():                       #figure out your interests (and eventually b
     for x in category:
         interest = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
         if interest == "yes":
-            filt_category = dataf["Categories"].isin([x])       #filters the events that are in said category
+            filt_category = dataf["Categories"].isin([x])               #filters the events that are in said category
             temp_dataf = dataf[filt_category].copy()
-            new_dataf = new_dataf.append(temp_dataf)
-            print(new_dataf)                                    #new_dataf IS a dataframe
-            obscure = pd.DataFrame(columns = ['to','fr','ans'])
+            new_dataf = new_dataf.append(temp_dataf)                    #new_dataf IS a dataframe
+
+            obscure = pd.DataFrame(columns = ['to','fr','ans'])         #track duration
             obscure.to = new_dataf["Start Time"].to_timestamp
             obscure.fr = new_dataf["End Time"].to_timestamp
             duration = (obscure.fr - obscure.to).astype('timedelta64[h]')
-            print(type(duration))
-            # new_dataf["Start Time"] = new_dataf["Start Time"].apply(pd.Timestamp)
-            # new_dataf["End Time"] = new_dataf["End Time"].apply(pd.Timestamp)
-            # new_dataf[Duration] = (new_dataf["End Time"]- new_dataf["Start Time"]).dt.days
-            new_dataf.insert(7,"Duration",duration,True)
+            new_dataf["Duration"]= duration
+            filter_date()                                               #calls function filter_date
 
-            filter_date()                                      #calls function filter_date
         elif interest == "no":
             pass
         else:
             print("Not an acceptable answer. Try Again.")
             break
 
-def filter_date():                                              #filters day the date
+def filter_date():                                                      #filters day the date
     global in_day_dataf
     global in_date
     global interval
+    global new_dataf
 
     in_date = pd.DataFrame()
     in_day_dataf = pd.DataFrame()
 
-
     interval = dt.timedelta(minutes=15)
 
     for j in dateofdaya:
-        in_date = new_dataf["Day"].isin([j])                    #filters the events that are in said day
+        print(new_dataf)
+        in_date = new_dataf["Day"].isin([j])                    #a boolean response
+        print(type(in_date))                                    # is a series
+        print(in_date)                                          # boolean response
         temp_dataf = dataf[in_date].copy()                      #copies the printed date
         in_day_dataf = in_day_dataf.append(temp_dataf)          #add to new dataframe called in_day_dataf
 
