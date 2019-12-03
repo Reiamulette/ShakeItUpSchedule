@@ -11,7 +11,7 @@ import timedelta as td
 # noinspection PyUnresolvedReferences
 import random
 
-#no inspection PyUnresolvedReferences has to do with using PyCharm...
+# no inspection PyUnresolvedReferences has to do with using PyCharm...
 
 
 desired_width = 300
@@ -19,7 +19,7 @@ pd.set_option('display.width', desired_width)
 np.set_printoptions(linewidth=desired_width)
 
 
-def load_data():                    #loads the excel file
+def load_data():                                # loads the excel file
     global dataf
     global df
 
@@ -29,7 +29,7 @@ def load_data():                    #loads the excel file
         try:
             filename = input("Enter the path of the excel file (be sure to include .xlsx): ")
             df = pd.read_excel(filename)
-            dataf = df.copy()           #created in case I accidentally mess up the original dataframe
+            dataf = df.copy()                   # created in case I accidentally mess up the original dataframe
             print(dataf)
         except:
             print("Error! Did you enter the path correctly?")
@@ -37,7 +37,7 @@ def load_data():                    #loads the excel file
         break
 
 
-def day_time():                 #finds out when you are going to be at the event
+def day_time():                                 # finds out when you are going to be at the event
     global dateofday
     global dateofdaya
     global start_time
@@ -45,9 +45,9 @@ def day_time():                 #finds out when you are going to be at the event
     global end_timea
     global end_time
 
-    dateofdaya = []         #creates list of dates
-    start_timea = []        #creates list of start time
-    end_timea = []          #creates list of end time
+    dateofdaya = []         # creates list of dates
+    start_timea = []        # creates list of start time
+    end_timea = []          # creates list of end time
 
     while True:
         try:
@@ -103,7 +103,7 @@ def day_time():                 #finds out when you are going to be at the event
     print("\n Noted. \n")
 
 
-def survey():                       #figure out your interests (and eventually builds your schedule)
+def survey():                       # figure out your interests (and eventually builds your schedule)
     global category
     global possible_events
     global filt_category
@@ -119,25 +119,46 @@ def survey():                       #figure out your interests (and eventually b
 
     for x in category:
         interest = input("Are you interested in " + str(x) + "?\nEnter yes or no.")
-        if interest == "yes":
-            filt_category = dataf["Categories"].isin([x])               #filters the events that are in said category
-            temp_dataf = dataf[filt_category].copy()
-            new_dataf = new_dataf.append(temp_dataf)                    #new_dataf IS a dataframe
+        while True:
+            try:
+                if interest == "yes":
+                    filt_category = dataf["Categories"].isin([x])                   # filters the events that are in said category
+                    temp_dataf = dataf[filt_category].copy()
+                    new_dataf = new_dataf.append(temp_dataf,sort = True)            # sort has to be true to keep index numbers *important because they are labels*
 
-            obscure = pd.DataFrame(columns = ['to','fr','ans'])         #track duration
+                    obscure = pd.DataFrame(columns = ['to','fr','ans'])             # track duration
+                    obscure.to = new_dataf["Start Time"].to_timestamp
+                    obscure.fr = new_dataf["End Time"].to_timestamp
+                    duration = (obscure.fr - obscure.to).astype('timedelta64[h]')
+                    new_dataf["Duration"]= duration
+
+                elif interest == "no":
+                    pass
+                else:
+                    print("Not an acceptable answer. Moving on.")
+                    break
+                break
+
+            except:
+                print("Return")
+                continue
+            break
+    if new_dataf.shape[0]<6:
+            print("Featured Panels will be automatically added because you do not have enough interest in our specially planned event and you're here using this program to try new things!")
+            filt_category = dataf["Categories"].isin(["Featured Panels"])   # filters the events that are in said category
+            temp_dataf = dataf[filt_category].copy()
+            new_dataf = new_dataf.append(temp_dataf,sort = True)            # sort has to be true to keep index numbers *important because they are labels*
+
+            obscure = pd.DataFrame(columns = ['to','fr','ans'])             # track duration
             obscure.to = new_dataf["Start Time"].to_timestamp
             obscure.fr = new_dataf["End Time"].to_timestamp
             duration = (obscure.fr - obscure.to).astype('timedelta64[h]')
             new_dataf["Duration"]= duration
-            filter_date()                                               #calls function filter_date
+    else:
+        pass
+    filter_date()                                                           # calls function filter_date
 
-        elif interest == "no":
-            pass
-        else:
-            print("Not an acceptable answer. Try Again.")
-            break
-
-def filter_date():                                                      #filters day the date
+def filter_date():                                                          # filters day the date and starts scheduling (adding events to final schedule)
     global in_day_dataf
     global in_date
     global interval
@@ -145,22 +166,16 @@ def filter_date():                                                      #filters
 
     in_date = pd.DataFrame()
     in_day_dataf = pd.DataFrame()
-
     interval = dt.timedelta(minutes=15)
 
     for j in dateofdaya:
-        print(new_dataf)
-        in_date = new_dataf["Day"].isin([j])                    #a boolean response
-        print(type(in_date))                                    # is a series
-        print(in_date)                                          # boolean response
-        temp_dataf = dataf[in_date].copy()                      #copies the printed date
-        in_day_dataf = in_day_dataf.append(temp_dataf)          #add to new dataframe called in_day_dataf
+        in_date = new_dataf["Day"].isin([j])                                # Filters events that aren't in the Day
+        temp_dataf = new_dataf[in_date].copy()                              # copies the printed dataframe
+        in_day_dataf = in_day_dataf.append(temp_dataf)                      # add to new dataframe called in_day_dataf
+        print(in_day_dataf)
+        scheduling()
 
-
-    print(df[in_day_dataf])
-    #scheduling()
-
-def scheduling():                                               #starts trying to schedule
+def scheduling():                                                           # starts trying to schedule
     global current_time
     global interval
     global duration
@@ -170,42 +185,45 @@ def scheduling():                                               #starts trying t
     global act_sched
     global rand_number
 
-    rand_number = 0
-    in_day_dataf = pd.DataFrame()
-    in_day_dataf_count_row = in_day_dataf.shape[0]              #count number of rows of the in_day_dataf
-    act_sched_count_row = in_day_dataf.shape[0]                 #count number of rows in actual schedule
-    current_time = start_timea[:]                               #give current_time a copy of start_time (so it change current time without moving start_time)
-    randomize = random.randint(0,in_day_dataf_count_row - 1)    #randomly choose event
+    interval = dt.timedelta(minutes=15)
     act_sched = pd.DataFrame()                                  # the schedule!
 
-    for x,y,z in start_timea, end_timea, current_time:
+    rand_number = 0
+    in_day_dataf_count_row = in_day_dataf.shape[0]              # count number of rows of the in_day_dataf
+    act_sched_count_row = act_sched.shape[0]                    # count number of rows in actual schedule
+    current_time = start_timea[:]                               # give current_time a copy of start_time (so it change current time without moving start_time)
+    randomize = random.randint(0,in_day_dataf_count_row-1)      # randomly choose event
+
+
+    for (x,y,z) in zip(start_timea, end_timea, current_time):
         if act_sched_count_row < 3:                             # attending 3 "prioritized" events minimum
-            while z < y:                                        #if current time is less than end time we want to add events
-                while True:                                     #random number generator
+            while z < y:                                        # if current time is less than end time we want to add events                                   # random number generator
+                while True:
                     try:
                         rnumber = int(input("Input a Random Number to randomly generate which event should be put into the category"))
                         print(rnumber)
-                        for j in range(rnumber):
-                            rand_number = randomize
-                        act_sched = act_sched.append(in_day_dataf.iloc(rand_number))    #add row to schedule
-                        duration_limit()                                                #check if row satisfy duration
+                        rand_number = (randomize for x in range(rnumber))
+                        act_sched = act_sched.append(in_day_dataf.iloc(rand_number))    # add row to schedule
+                        check_time()                                                    # check if row satisfy duration
                     except:
                         print("Error! Did you enter a number?")
                         continue
-                    break
-            y += interval                                       # to help break while loop.
+                break
+            y += interval                                                               # to help break while loop.
         else:
-            print(b)
+            pass
 
-def duration_limit():
+def check_time():
     crop_time = dt.timedelta(minutes = 60)
 
     if in_day_dataf["Duration"] > dt.timedelta(minutes = 180):
-
         act_sched.update()
-    if act_sched["Start Time"] >= in_day_data.iloc(rand_number)["Start Time"]:        #if the event isn't open yet, move on to next hour to check
+    if act_sched["Start Time"] >= in_day_data.iloc(rand_number)["Start Time"]:          # if the event isn't open yet, move on to next hour to check
         if act_sched["End Time"] >= in_day_data.iloc(rand_number)["End Time"]:
             print(act_sched)
+
+#def add_panel():
+    #figure out how to sort the events by time
 
 load_data()
 day_time()
