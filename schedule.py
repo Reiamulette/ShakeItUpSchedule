@@ -218,11 +218,15 @@ def scheduling():                                                           # st
             pass
 
 def check_time():
-    crop_time = dt.timedelta(minutes = 60)
+    timeframe = act_sched["Duration"].to_timestamp
+    print(type(timeframe))
+    timeframe = act_sched["Duration"].to_numpy()
+    print(type(timeframe))
 
-    if act_sched["Duration"] > dt.timedelta(minutes = 180):
-
-        act_sched.at('Start Time')[in_day_data.iloc(rand_number)] = current_time
+    if timeframe > dt.timedelta(hours = 3):
+        act_sched.at('Start Time')[act_sched.iloc(rand_number)] = current_time
+        new_end = dt.combine(current_time) + timedelta(hours =1)
+        act_sched.at('End Time')[act_sched.iloc(rand_number)] = new_end
     if act_sched["Start Time"] >= in_day_data.iloc(rand_number)["Start Time"]:          # if the event isn't open yet, move on to next hour to check
         if act_sched["End Time"] >= in_day_data.iloc(rand_number)["End Time"]:
             print(act_sched)
