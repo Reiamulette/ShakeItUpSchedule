@@ -204,23 +204,25 @@ def scheduling():                                                           # st
                     except:
                         print("Error! Did you enter a number?")
                         continue
-                    for i in range(rnumber):
-                        rand_number = random.randint(0,in_day_dataf_count_row-1)
-                        print(rand_number)
-                        act_sched = act_sched.append(in_day_dataf.iloc[rand_number])    # add row to schedule
-                        print(act_sched)
-                        check_time()                                                    # check if row satisfy duration
+                    break
+                for i in range(rnumber):
+                    rand_number = random.randint(0,in_day_dataf_count_row-1)
+                act_sched = act_sched.append(in_day_dataf.iloc[rand_number])    # add row to schedule
+                print(rand_number)
+                print(act_sched)
+                check_time()                                                    # check if row satisfy duration
 
-                break
-            y += interval                                                               # to help break while loop.
+
+                y += interval                                                               # to help break while loop.
         else:
             pass
 
 def check_time():
     crop_time = dt.timedelta(minutes = 60)
 
-    if in_day_dataf["Duration"] > dt.timedelta(minutes = 180):
-        act_sched.update()
+    if act_sched["Duration"] > dt.timedelta(minutes = 180):
+
+        act_sched.at('Start Time')[in_day_data.iloc(rand_number)] = current_time
     if act_sched["Start Time"] >= in_day_data.iloc(rand_number)["Start Time"]:          # if the event isn't open yet, move on to next hour to check
         if act_sched["End Time"] >= in_day_data.iloc(rand_number)["End Time"]:
             print(act_sched)
