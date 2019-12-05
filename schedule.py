@@ -218,21 +218,21 @@ def scheduling():                                                           # st
             pass
 
 def check_time():
-    timeframe = act_sched["Duration"].to_timestamp
-    print(type(timeframe))
-    timeframe = act_sched["Duration"].to_numpy()
-    print(type(timeframe))
+    global in_day
+    timeframe = pd.to_timedelta(act_sched["Duration"],unit = "h")
 
-    if timeframe > dt.timedelta(hours = 3):
+    if (timeframe > dt.timedelta(hours = 3)).bool():
         act_sched.at('Start Time')[act_sched.iloc(rand_number)] = current_time
-        new_end = dt.combine(current_time) + timedelta(hours =1)
+        new_end = dt.dt(current_time) + dt.timedelta(hours =1)
         act_sched.at('End Time')[act_sched.iloc(rand_number)] = new_end
-    if act_sched["Start Time"] >= in_day_data.iloc(rand_number)["Start Time"]:          # if the event isn't open yet, move on to next hour to check
-        if act_sched["End Time"] >= in_day_data.iloc(rand_number)["End Time"]:
+        print(act_sched["Start Time"])
+        print(act_sched["End Time"])
+    if act_sched["Start Time"] >= in_day_dataf.iloc(rand_number)["Start Time"]:          # Errors here: if the event isn't open yet, move on to next hour to check
+        if act_sched["End Time"] >= in_day_dataf.iloc(rand_number)["End Time"]:
             print(act_sched)
 
 #def add_panel():
-    #figure out how to sort the events by time
+    #figure out how to sort the events by tim
 
 load_data()
 day_time()
